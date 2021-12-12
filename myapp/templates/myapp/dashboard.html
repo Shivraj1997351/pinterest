@@ -1,0 +1,45 @@
+{% extends 'myapp/base.html' %} {% load static %} {% block title %}Dashboard{% endblock title %} {% block css %}
+<link rel="stylesheet" href="{% static 'myapp/css/login.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+{% endblock css %} {% block content %}
+<div class="login-form">
+    <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <div class="avatar">
+            <img src="{% static 'myapp/images/avatar.jpg' %}" alt="Avatar">
+        </div>
+        <h2 class="text-center">Upload pic</h2>
+        <div class="form-group">
+            {% for fm in form %} {{fm.label_tag}}{{fm}}<span class="formerror">{{fm.errors|striptags}}</span><br><br> {% endfor %}
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Upload" class="btn btn-danger">
+        </div>
+    </form>
+</div>
+<div class="container">
+    <div class="row">
+        {% for x in img %}
+        <div class="col-sm-4">
+            <div class="card m-2">
+                <img src="{{x.photo.url}}" alt="" class="img-card-top" height="200px">
+                <div class="card-footer">
+                    <small class="text-muted">{{x.user}}</small>
+                    <small class="text-muted">{{x.date}}</small>
+                    <a href="{{x.photo.url}}" style="text-decoration: none;" download><small style="color:red;">Download</small></a><br><br>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+<script src="{% static 'myapp/js/ajax.js' %}"></script>
+{% endblock content %}

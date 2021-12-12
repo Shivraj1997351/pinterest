@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock title %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'myapp/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/css/login.css' %}">
+    <style>
+        body {
+            color: #fff;
+            background: #d47677;
+        }
+        
+        .dropbtn {
+            color: black;
+            font-size: 18px;
+            border: none;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Home</a>
+        <div class="dropdown">
+            <button class="dropbtn">{{request.user}}</button>
+            <div class="dropdown-content">
+                <a href="{% url 'profile' %}">Profile</a>
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Changepassword</button>
+            <div class="dropdown-content">
+                <a href="{% url 'changepass' %}">Change password(with old one)</a>
+                <a href="{% url 'changepass1' %}">Change password(without)</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="login-form">
+            <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <div class="avatar">
+                    <img src="{% static 'myapp/images/avatar.jpg' %}" alt="Avatar">
+                </div>
+                <h2 class="text-center">Upload pic</h2>
+                <div class="form-group">
+                    {% for fm in form %} {{fm.label_tag}}{{fm}}<span class="formerror">{{fm.errors|striptags}}</span><br><br> {% endfor %}
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Upload" class="btn btn-danger">
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            {% for x in img %}
+            <div class="col-sm-4">
+                <div class="card m-2">
+                    <img src="{{x.photo.url}}" alt="" class="img-card-top" height="200px">
+                    <div class="card-footer">
+                        <small class="text-muted">{{x.user}}</small>
+                        <small class="text-muted">{{x.date}}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+    <script src="{% static 'myapp/js/all.min.js' %}"></script>
+</body>
+
+</html>
